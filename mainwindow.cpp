@@ -17,6 +17,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(openAction, &QAction::triggered, this, &MainWindow::on_actionOpen_triggered);
     ui->menuFile->addAction(openAction);
 
+    // Quit アクションの追加
+    QAction *quitAction = new QAction(tr("&Quit"), this);
+    quitAction->setShortcut(QKeySequence::Quit);
+    quitAction->setStatusTip(tr("Quit the application"));
+    connect(quitAction, &QAction::triggered, this, &MainWindow::close);
+    ui->menuFile->addAction(quitAction);
+
+
     m_videoWidget = new QVideoWidget(this);
     setCentralWidget(m_videoWidget);
 
