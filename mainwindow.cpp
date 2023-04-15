@@ -6,6 +6,7 @@
 #include <QToolBar> // QToolBar をインクルード
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QSettings>
 #include <QTimer>
 //#include <QMediaContent>
@@ -49,16 +50,24 @@ MainWindow::MainWindow(QWidget *parent) :
     m_videoWidget = new QVideoWidget(this);
     layout->addWidget(m_videoWidget);
 
+    // "Play" ボタンと "Stop" ボタンを配置する QHBoxLayout を作成
+    QHBoxLayout *buttonsLayout = new QHBoxLayout();
+
     // "Play" ボタンを作成
     QPushButton *playButton = new QPushButton("Play", this);
     playButton->setFixedSize(100, 50);  // 幅100px, 高さ50pxに設定
-    layout->addWidget(playButton);
+//    layout->addWidget(playButton);
+    buttonsLayout->addWidget(playButton);
 
     // "Stop" ボタンを作成
     QPushButton *stopButton = new QPushButton("Stop", this);
     stopButton->setFixedSize(100, 50);  // 幅100px, 高さ50pxに設定
-    layout->addWidget(stopButton);
+//    layout->addWidget(stopButton);
+    buttonsLayout->addWidget(stopButton);
 //    setCentralWidget(m_videoWidget);
+
+    // ボタン配置用の QHBoxLayout を QVBoxLayout に追加
+    layout->addLayout(buttonsLayout);
 
     // メディアプレイヤーの作成
     m_player = new QMediaPlayer(this);
