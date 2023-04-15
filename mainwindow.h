@@ -23,7 +23,7 @@ public:
 
 private slots:
     void on_actionOpen_triggered();
-    void stopVideo();
+//    void stopVideo();
 
 private:
     Ui::MainWindow *ui;

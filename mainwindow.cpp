@@ -90,7 +90,7 @@ void MainWindow::on_actionOpen_triggered()
     }
 }
 // 動画の再生をストップ(pause)するスロット
-void MainWindow::stopVideo()
-{
-    m_player->pause();
-}
+//void MainWindow::stopVideo()
+//{
+//    m_player->pause();
+//}
