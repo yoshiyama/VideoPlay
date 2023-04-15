@@ -6,6 +6,7 @@
 #include <QToolBar> // QToolBar をインクルード
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QSettings>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -45,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // "Stop" ボタンを作成
     QPushButton *stopButton = new QPushButton("Stop", this);
+    stopButton->setFixedSize(100, 50);  // 幅100px, 高さ50pxに設定
     layout->addWidget(stopButton);
 //    setCentralWidget(m_videoWidget);
 
@@ -70,10 +72,21 @@ MainWindow::~MainWindow()
 //動画を再生するスロット
 void MainWindow::on_actionOpen_triggered()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("Video Files (*.mp4)"));
+//    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("Video Files (*.mp4)"));
+//    if (!fileName.isEmpty()) {
+//        m_player->setSource(QUrl::fromLocalFile(fileName));
+//        m_player->play();
+//    }
+    QSettings settings("MyCompany", "MyApp");
+    QString lastPath = settings.value("LastPath").toString();
+
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), lastPath, tr("Video Files (*.mp4)"));
     if (!fileName.isEmpty()) {
         m_player->setSource(QUrl::fromLocalFile(fileName));
         m_player->play();
+
+        QFileInfo fileInfo(fileName);
+        settings.setValue("LastPath", fileInfo.absolutePath());
     }
 }
 // 動画の再生をストップ(pause)するスロット
