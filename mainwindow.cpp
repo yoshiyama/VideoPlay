@@ -3,6 +3,7 @@
 #include <QVideoWidget>
 #include <QMediaPlayer>
 #include <QFileDialog>
+#include <QToolBar> // QToolBar をインクルード
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -24,6 +25,15 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(quitAction, &QAction::triggered, this, &MainWindow::close);
     ui->menuFile->addAction(quitAction);
 
+    // ツールバーの作成
+    QToolBar *toolbar = new QToolBar(this);
+    addToolBar(Qt::TopToolBarArea, toolbar);
+
+    // Stop ボタンの追加
+    QAction *stopAction = new QAction(tr("Stop"), this);
+    stopAction->setStatusTip(tr("Stop the video"));
+    connect(stopAction, &QAction::triggered, this, &MainWindow::stopVideo);
+    toolbar->addAction(stopAction);
 
     m_videoWidget = new QVideoWidget(this);
     setCentralWidget(m_videoWidget);
@@ -38,6 +48,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+//動画を再生するスロット
 void MainWindow::on_actionOpen_triggered()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("Video Files (*.mp4)"));
@@ -45,4 +56,9 @@ void MainWindow::on_actionOpen_triggered()
         m_player->setSource(QUrl::fromLocalFile(fileName));
         m_player->play();
     }
+}
+// 動画の再生をストップ(pause)するスロット
+void MainWindow::stopVideo()
+{
+    m_player->pause();
 }
