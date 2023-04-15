@@ -1,3 +1,2 @@
-# fileMenu
-movie file open play
-This is playing video application.
+# VideoPlay
+This is GUI application for playing video.
