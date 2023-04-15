@@ -4,6 +4,8 @@
 #include <QMediaPlayer>
 #include <QFileDialog>
 #include <QToolBar> // QToolBar をインクルード
+#include <QPushButton>
+#include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -25,22 +27,39 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(quitAction, &QAction::triggered, this, &MainWindow::close);
     ui->menuFile->addAction(quitAction);
 
-    // ツールバーの作成
-    QToolBar *toolbar = new QToolBar(this);
-    addToolBar(Qt::TopToolBarArea, toolbar);
+//    // ツールバーの作成
+//    QToolBar *toolbar = new QToolBar(this);
+//    addToolBar(Qt::TopToolBarArea, toolbar);
 
-    // Stop ボタンの追加
-    QAction *stopAction = new QAction(tr("Stop"), this);
-    stopAction->setStatusTip(tr("Stop the video"));
-    connect(stopAction, &QAction::triggered, this, &MainWindow::stopVideo);
-    toolbar->addAction(stopAction);
+//    // Stop ボタンの追加
+//    QAction *stopAction = new QAction(tr("Stop"), this);
+//    stopAction->setStatusTip(tr("Stop the video"));
+//    connect(stopAction, &QAction::triggered, this, &MainWindow::stopVideo);
+//    toolbar->addAction(stopAction);
+
+    // ウィジェットを配置する QVBoxLayout を作成
+    QVBoxLayout *layout = new QVBoxLayout();
 
     m_videoWidget = new QVideoWidget(this);
-    setCentralWidget(m_videoWidget);
+    layout->addWidget(m_videoWidget);
+
+    // "Stop" ボタンを作成
+    QPushButton *stopButton = new QPushButton("Stop", this);
+    layout->addWidget(stopButton);
+//    setCentralWidget(m_videoWidget);
 
     // メディアプレイヤーの作成
     m_player = new QMediaPlayer(this);
     m_player->setVideoOutput(m_videoWidget);
+
+    // "Stop" ボタンの clicked() シグナルをメディアプレイヤーの stop() スロットに接続
+    connect(stopButton, &QPushButton::clicked, m_player, &QMediaPlayer::pause);
+
+    // メインウィンドウに QVBoxLayout を設定
+    QWidget *centralWidget = new QWidget(this);
+    centralWidget->setLayout(layout);
+    setCentralWidget(centralWidget);
+
 }
 
 MainWindow::~MainWindow()
